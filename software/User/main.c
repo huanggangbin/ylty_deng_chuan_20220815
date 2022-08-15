@@ -80,7 +80,7 @@ void main(void)
 	SPI_config();
 
 	ledIndex = 0;
-	
+	//15
 	while(1)
 	{
 		P5 = ~ledNum[ledIndex];	//Êä³öµÍÇý¶¯
