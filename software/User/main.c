@@ -26,7 +26,8 @@
 
 /*************	本地常量声明	**************/
 u8 code ledNum[]={0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};
-
+u8 P3_status = 0;
+u8 P5_status = 0;
 
 /*************	本地变量声明	**************/
 u8 ledIndex;
@@ -42,15 +43,14 @@ u8 ledIndex;
 void	GPIO_config(void)
 {
 	GPIO_InitTypeDef	GPIO_InitStructure;		//结构定义
-	GPIO_InitStructure.Pin  = GPIO_Pin_2 | GPIO_Pin_3;		//指定要初始化的IO,
-	GPIO_InitStructure.Mode = GPIO_PullUp;		//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
-	GPIO_Inilize(GPIO_P3,&GPIO_InitStructure);	//初始化
-	
-	
 
-	GPIO_InitStructure.Pin  = GPIO_Pin_4 | GPIO_Pin_5;		//指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
+	GPIO_InitStructure.Pin  = GPIO_Pin_4;		//指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
 	GPIO_InitStructure.Mode = GPIO_PullUp;		//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
 	GPIO_Inilize(GPIO_P5,&GPIO_InitStructure);	//初始化
+	
+	GPIO_InitStructure.Pin  = GPIO_Pin_2;		//指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
+	GPIO_InitStructure.Mode = GPIO_PullUp;		//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+	GPIO_Inilize(GPIO_P3,&GPIO_InitStructure);	//初始化
 }
 
 
@@ -59,17 +59,26 @@ void	SPI_config(void)
 {
 	SPI_InitTypeDef		SPI_InitStructure;
 	SPI_InitStructure.SPI_Module    = ENABLE;						//SPI启动    ENABLE, DISABLE
-	SPI_InitStructure.SPI_SSIG      = ENABLE;					//片选位     ENABLE, DISABLE
+	SPI_InitStructure.SPI_SSIG      = DISABLE;					//片选位     ENABLE, DISABLE
 	SPI_InitStructure.SPI_FirstBit  = SPI_MSB;					//移位方向   SPI_MSB, SPI_LSB
-	SPI_InitStructure.SPI_Mode      = SPI_Mode_Slave;	  //主从选择   SPI_Mode_Master, SPI_Mode_Slave
+	SPI_InitStructure.SPI_Mode      = SPI_Mode_Master;	  //主从选择   SPI_Mode_Master, SPI_Mode_Slave
 	SPI_InitStructure.SPI_CPOL      = SPI_CPOL_Low;    //时钟相位   SPI_CPOL_High,   SPI_CPOL_Low
 	SPI_InitStructure.SPI_CPHA      = SPI_CPHA_2Edge;	  //数据边沿   SPI_CPHA_1Edge,  SPI_CPHA_2Edge
-	SPI_InitStructure.SPI_Interrupt = ENABLE;			  //中断允许   ENABLE,DISABLE
+	SPI_InitStructure.SPI_Interrupt = DISABLE;			  //中断允许   ENABLE,DISABLE
 	SPI_InitStructure.SPI_Speed     = SPI_Speed_4;		  //SPI速度    SPI_Speed_4, SPI_Speed_16, SPI_Speed_64, SPI_Speed_128
-	SPI_InitStructure.SPI_IoUse     = SPI_P22_P23_P24_P25; //IO口切换   SPI_P12_P13_P14_P15, SPI_P22_P23_P24_P25, SPI_P54_P40_P41_P43, SPI_P35_P34_P33_P32
+	SPI_InitStructure.SPI_IoUse     = 0; //IO口切换   STC8G1K08A
 	SPI_Init(&SPI_InitStructure);
 	
-	SPI_SS_2 = 1;
+	//SPI_SS_2 = 1;
+}
+
+#define ESPI        0x02
+
+
+void SPI_Isr() interrupt 9
+{
+    SPSTAT = 0xc0;                              //清中断标志
+    //P10 = !P10;                                 //测试端口
 }
 
 
@@ -78,24 +87,26 @@ void main(void)
 {
 	GPIO_config();
 	SPI_config();
+	
+
+	
 
 	ledIndex = 0;
-	//15
 	while(1)
 	{
-		P5 = ~ledNum[ledIndex];	//输出低驱动
-		P3 = ~ledNum[ledIndex];	//输出低驱动
-		
+
+
+		//SPI_WriteByte(0x5a);
+		SPDAT = 0x5a;
+		//delay_ms(1);
 		ledIndex++;
 		if(ledIndex > 7)
 		{
 			ledIndex = 0;
 		}
-		delay_ms(250);
-		delay_ms(250);
+		//delay_ms(25);
+		//delay_ms(25);
 	}
 }
-
-
 
 
