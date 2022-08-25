@@ -51,6 +51,10 @@ void	GPIO_config(void)
 	GPIO_InitStructure.Pin  = GPIO_Pin_2;		//指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
 	GPIO_InitStructure.Mode = GPIO_PullUp;		//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
 	GPIO_Inilize(GPIO_P3,&GPIO_InitStructure);	//初始化
+	
+	GPIO_InitStructure.Pin  = GPIO_Pin_5;		//指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
+	GPIO_InitStructure.Mode = GPIO_PullUp;		//指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_OUT_PP
+	GPIO_Inilize(GPIO_P5,&GPIO_InitStructure);	//初始化
 }
 
 
@@ -94,11 +98,10 @@ void main(void)
 	ledIndex = 0;
 	while(1)
 	{
-
-
 		//SPI_WriteByte(0x5a);
 		SPDAT = 0x5a;
 		//delay_ms(1);
+		P5_status = P5;
 		ledIndex++;
 		if(ledIndex > 7)
 		{

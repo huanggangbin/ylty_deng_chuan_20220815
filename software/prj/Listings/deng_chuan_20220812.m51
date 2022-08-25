@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    08/16/2022  16:44:26  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    08/23/2022  14:30:34  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
@@ -49,17 +49,17 @@ LINK MAP OF MODULE:  .\Objects\deng_chuan_20220812 (?C_STARTUP)
             CODE    02C5H     009BH     UNIT         ?PR?_SPI_INIT?SPI
             CODE    0360H     008CH     UNIT         ?C_C51STARTUP
             CODE    03ECH     0046H     UNIT         ?C?LIB_CODE
-            CODE    0432H     0020H     UNIT         ?PR?GPIO_CONFIG?MAIN
-            CODE    0452H     001EH     UNIT         ?PR?MAIN?MAIN
-            CODE    0470H     001DH     UNIT         ?PR?SPI_CONFIG?MAIN
-            CODE    048DH     0011H     UNIT         ?PR?_SPI_SETMODE?SPI
-            CODE    049EH     0010H     UNIT         ?PR?_DELAY_MS?DELAY
-            CODE    04AEH     0008H     UNIT         ?CO?MAIN
-            CODE    04B6H     0008H     UNIT         ?PR?_SPI_WRITEBYTE?SPI
-            CODE    04BEH     0007H     UNIT         ?C_INITSEG
-            CODE    04C5H     0004H     UNIT         ?PR?SPI_ISR?MAIN
+            CODE    0432H     0030H     UNIT         ?PR?GPIO_CONFIG?MAIN
+            CODE    0462H     0021H     UNIT         ?PR?MAIN?MAIN
+            CODE    0483H     001DH     UNIT         ?PR?SPI_CONFIG?MAIN
+            CODE    04A0H     0011H     UNIT         ?PR?_SPI_SETMODE?SPI
+            CODE    04B1H     0010H     UNIT         ?PR?_DELAY_MS?DELAY
+            CODE    04C1H     0008H     UNIT         ?CO?MAIN
+            CODE    04C9H     0008H     UNIT         ?PR?_SPI_WRITEBYTE?SPI
+            CODE    04D1H     0007H     UNIT         ?C_INITSEG
+            CODE    04D8H     0004H     UNIT         ?PR?SPI_ISR?MAIN
 
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/16/2022  16:44:26  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/23/2022  14:30:34  PAGE 2
 
 
 
@@ -119,7 +119,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\deng_chuan_20220812 (?C_STARTUP)
   C:0000H         LINE#         126
   C:0360H         LINE#         133
   C:0362H         LINE#         134
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/16/2022  16:44:26  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/23/2022  14:30:34  PAGE 3
 
 
   C:0363H         LINE#         135
@@ -145,20 +145,20 @@ SYMBOL TABLE OF MODULE:  .\Objects\deng_chuan_20220812 (?C_STARTUP)
   D:0088H         PUBLIC        TCON
   D:00F0H         PUBLIC        B
   D:00E0H         PUBLIC        ACC
-  C:049EH         PUBLIC        _delay_ms
+  C:04B1H         PUBLIC        _delay_ms
   D:00D0H         PUBLIC        PSW
   -------         PROC          _DELAY_MS
   D:0007H         SYMBOL        ms
   -------         DO            
   D:0004H         SYMBOL        i
   -------         ENDDO         
-  C:049EH         LINE#         30
-  C:049EH         LINE#         31
-  C:049EH         LINE#         33
-  C:049EH         LINE#         34
-  C:04A2H         LINE#         35
-  C:04ABH         LINE#         36
-  C:04ADH         LINE#         37
+  C:04B1H         LINE#         30
+  C:04B1H         LINE#         31
+  C:04B1H         LINE#         33
+  C:04B1H         LINE#         34
+  C:04B5H         LINE#         35
+  C:04BEH         LINE#         36
+  C:04C0H         LINE#         37
   -------         ENDPROC       _DELAY_MS
   -------         ENDMOD        DELAY
 
@@ -179,7 +179,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\deng_chuan_20220812 (?C_STARTUP)
   D:00B3H         PUBLIC        P4M1
   D:00B0H         PUBLIC        P3
   D:00CCH         PUBLIC        P6M0
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/16/2022  16:44:26  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/23/2022  14:30:34  PAGE 4
 
 
   D:00C9H         PUBLIC        P5M1
@@ -239,7 +239,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\deng_chuan_20220812 (?C_STARTUP)
   C:0198H         LINE#         61
   C:0198H         LINE#         62
   C:01A9H         LINE#         63
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/16/2022  16:44:26  PAGE 5
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/23/2022  14:30:34  PAGE 5
 
 
   C:01B9H         LINE#         64
@@ -287,19 +287,19 @@ SYMBOL TABLE OF MODULE:  .\Objects\deng_chuan_20220812 (?C_STARTUP)
   D:00A8H         PUBLIC        IE
   D:00B8H         PUBLIC        IP
   D:00D8H         PUBLIC        CCON
-  C:0452H         PUBLIC        main
+  C:0462H         PUBLIC        main
   D:0013H         PUBLIC        ledIndex
   D:0098H         PUBLIC        SCON
   D:0088H         PUBLIC        TCON
   D:00F0H         PUBLIC        B
-  C:0470H         PUBLIC        SPI_config
+  C:0483H         PUBLIC        SPI_config
   D:00E0H         PUBLIC        ACC
   D:00CDH         PUBLIC        SPSTAT
-  C:04AEH         PUBLIC        ledNum
+  C:04C1H         PUBLIC        ledNum
   D:00D0H         PUBLIC        PSW
-  C:04C5H         PUBLIC        SPI_Isr
+  C:04D8H         PUBLIC        SPI_Isr
   D:00CFH         PUBLIC        SPDAT
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/16/2022  16:44:26  PAGE 6
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/23/2022  14:30:34  PAGE 6
 
 
   -------         PROC          GPIO_CONFIG
@@ -314,57 +314,61 @@ SYMBOL TABLE OF MODULE:  .\Objects\deng_chuan_20220812 (?C_STARTUP)
   C:0442H         LINE#         51
   C:0445H         LINE#         52
   C:0448H         LINE#         53
+  C:0452H         LINE#         55
+  C:0455H         LINE#         56
+  C:0458H         LINE#         57
   -------         ENDPROC       GPIO_CONFIG
   -------         PROC          SPI_CONFIG
   -------         DO            
   D:0008H         SYMBOL        SPI_InitStructure
   -------         ENDDO         
-  C:0470H         LINE#         58
-  C:0470H         LINE#         59
-  C:0470H         LINE#         61
-  C:0473H         LINE#         62
-  C:0476H         LINE#         63
-  C:0478H         LINE#         64
-  C:047BH         LINE#         65
-  C:047DH         LINE#         66
-  C:047FH         LINE#         67
-  C:0481H         LINE#         68
-  C:0483H         LINE#         69
-  C:0485H         LINE#         70
+  C:0483H         LINE#         62
+  C:0483H         LINE#         63
+  C:0483H         LINE#         65
+  C:0486H         LINE#         66
+  C:0489H         LINE#         67
+  C:048BH         LINE#         68
+  C:048EH         LINE#         69
+  C:0490H         LINE#         70
+  C:0492H         LINE#         71
+  C:0494H         LINE#         72
+  C:0496H         LINE#         73
+  C:0498H         LINE#         74
   -------         ENDPROC       SPI_CONFIG
   -------         PROC          SPI_ISR
-  C:04C5H         LINE#         78
-  C:04C5H         LINE#         80
-  C:04C8H         LINE#         82
+  C:04D8H         LINE#         82
+  C:04D8H         LINE#         84
+  C:04DBH         LINE#         86
   -------         ENDPROC       SPI_ISR
   -------         PROC          MAIN
-  C:0452H         LINE#         86
-  C:0452H         LINE#         87
-  C:0452H         LINE#         88
-  C:0455H         LINE#         89
-  C:0458H         LINE#         94
-  C:045BH         LINE#         95
-  C:045BH         LINE#         96
-  C:045BH         LINE#         100
-  C:045EH         LINE#         102
-  C:0460H         LINE#         103
-  C:046BH         LINE#         104
-  C:046BH         LINE#         105
-  C:046EH         LINE#         106
-  C:046EH         LINE#         109
+  C:0462H         LINE#         90
+  C:0462H         LINE#         91
+  C:0462H         LINE#         92
+  C:0465H         LINE#         93
+  C:0468H         LINE#         98
+  C:046BH         LINE#         99
+  C:046BH         LINE#         100
+  C:046BH         LINE#         102
+  C:046EH         LINE#         104
+  C:0471H         LINE#         105
+  C:0473H         LINE#         106
+  C:047EH         LINE#         107
+  C:047EH         LINE#         108
+  C:0481H         LINE#         109
+  C:0481H         LINE#         112
   -------         ENDPROC       MAIN
   -------         ENDMOD        MAIN
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/23/2022  14:30:34  PAGE 7
+
 
   -------         MODULE        SPI
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0080H         PUBLIC        P0
   D:0090H         PUBLIC        P1
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/16/2022  16:44:26  PAGE 7
-
-
   C:0003H         PUBLIC        SPI_Transivion
   D:00A0H         PUBLIC        P2
-  C:048DH         PUBLIC        _SPI_SetMode
+  C:04A0H         PUBLIC        _SPI_SetMode
   D:00B0H         PUBLIC        P3
   D:00C0H         PUBLIC        P4
   D:00C8H         PUBLIC        P5
@@ -385,7 +389,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\deng_chuan_20220812 (?C_STARTUP)
   D:0015H         PUBLIC        SPI_RxTimerOut
   D:00CDH         PUBLIC        SPSTAT
   C:02C5H         PUBLIC        _SPI_Init
-  C:04B6H         PUBLIC        _SPI_WriteByte
+  C:04C9H         PUBLIC        _SPI_WriteByte
   X:0000H         PUBLIC        SPI_RxBuffer
   D:00D0H         PUBLIC        PSW
   D:00CFH         PUBLIC        SPDAT
@@ -415,30 +419,30 @@ SYMBOL TABLE OF MODULE:  .\Objects\deng_chuan_20220812 (?C_STARTUP)
   -------         ENDPROC       _SPI_INIT
   -------         PROC          _SPI_SETMODE
   D:0007H         SYMBOL        mode
-  C:048DH         LINE#         58
-  C:048DH         LINE#         59
-  C:048DH         LINE#         60
-  C:0490H         LINE#         61
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/16/2022  16:44:26  PAGE 8
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/23/2022  14:30:34  PAGE 8
 
 
-  C:0490H         LINE#         62
-  C:0493H         LINE#         63
-  C:0496H         LINE#         64
-  C:0497H         LINE#         66
-  C:0497H         LINE#         67
-  C:049AH         LINE#         68
-  C:049DH         LINE#         69
-  C:049DH         LINE#         70
+  C:04A0H         LINE#         58
+  C:04A0H         LINE#         59
+  C:04A0H         LINE#         60
+  C:04A3H         LINE#         61
+  C:04A3H         LINE#         62
+  C:04A6H         LINE#         63
+  C:04A9H         LINE#         64
+  C:04AAH         LINE#         66
+  C:04AAH         LINE#         67
+  C:04ADH         LINE#         68
+  C:04B0H         LINE#         69
+  C:04B0H         LINE#         70
   -------         ENDPROC       _SPI_SETMODE
   -------         PROC          _SPI_WRITEBYTE
   D:0007H         SYMBOL        dat
-  C:04B6H         LINE#         80
-  C:04B6H         LINE#         81
-  C:04B6H         LINE#         82
-  C:04B8H         LINE#         83
-  C:04BAH         LINE#         84
-  C:04BDH         LINE#         85
+  C:04C9H         LINE#         80
+  C:04C9H         LINE#         81
+  C:04C9H         LINE#         82
+  C:04CBH         LINE#         83
+  C:04CDH         LINE#         84
+  C:04D0H         LINE#         85
   -------         ENDPROC       _SPI_WRITEBYTE
   -------         PROC          SPI_TRANSIVION
   C:0003H         LINE#         95
@@ -475,13 +479,13 @@ SYMBOL TABLE OF MODULE:  .\Objects\deng_chuan_20220812 (?C_STARTUP)
 
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_SPI_WRITEBYTE?SPI
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/23/2022  14:30:34  PAGE 9
+
+
 
 *** WARNING L5: CODE SPACE MEMORY OVERLAP
     FROM:    004BH
     TO:      004DH
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  08/16/2022  16:44:26  PAGE 9
 
-
-
-Program Size: data=23.1 xdata=128 code=1226
+Program Size: data=23.1 xdata=128 code=1245
 LINK/LOCATE RUN COMPLETE.  5 WARNING(S),  0 ERROR(S)
