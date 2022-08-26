@@ -1,10 +1,10 @@
-C51 COMPILER V9.60.0.0   MAIN                                                              08/23/2022 14:30:34 PAGE 1   
+C51 COMPILER V9.60.0.0   MAIN                                                              08/26/2022 14:50:05 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN .\Objects\main.obj
-COMPILER INVOKED BY: D:\Program Files\Keil_v5\C51\BIN\C51.EXE ..\User\main.c OPTIMIZE(8,SPEED) BROWSE INCDIR(..\User) DE
-                    -BUG OBJECTEXTEND PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+COMPILER INVOKED BY: D:\Program Files\Keil_v5\C51\BIN\C51.EXE ..\User\main.c OMF2 OPTIMIZE(8,SPEED) BROWSE INCDIR(..\Use
+                    -r) DEBUG PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
 
 line level    source
 
@@ -24,123 +24,137 @@ line level    source
   14          #include  "GPIO.h"
   15          #include  "delay.h"
   16          #include  "spi.h"
-  17          /***************  功能说明  ****************
-  18          
-  19          本例程基于STC8H8K64U为主控芯片的实验箱8进行编写测试，STC8G、STC8H系列芯片可通用参考.
-  20          
-  21          程序使用P6口来演示跑马灯，输出低驱动。
-  22          
-  23          下载时, 选择时钟 24MHz (可以在配置文件"config.h"中修改).
-  24          
-  25          ******************************************/
-  26          
-  27          /*************  本地常量声明  **************/
-  28          u8 code ledNum[]={0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};
-  29          u8 P3_status = 0;
-  30          u8 P5_status = 0;
-  31          
-  32          /*************  本地变量声明  **************/
-  33          u8 ledIndex;
-  34          
+  17          #include  "timer.h"
+  18          /***************  功能说明  ****************
+  19          
+  20          本例程基于STC8H8K64U为主控芯片的实验箱8进行编写测试，STC8G、STC8H系列芯片可通用参考.
+  21          
+  22          程序使用P6口来演示跑马灯，输出低驱动。
+  23          
+  24          下载时, 选择时钟 24MHz (可以在配置文件"config.h"中修改).
+  25          
+  26          ******************************************/
+  27          
+  28          /*************  本地常量声明  **************/
+  29          u8 code ledNum[]={0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};
+  30          u8 P3_status = 0;
+  31          u8 P5_status = 0;
+  32          
+  33          /*************  本地变量声明  **************/
+  34          u8 ledIndex;
   35          
-  36          /*************  本地函数声明  **************/
-  37          
+  36          
+  37          /*************  本地函数声明  **************/
   38          
-  39          /*************  外部函数和变量声明 *****************/
-  40          
+  39          
+  40          /*************  外部函数和变量声明 *****************/
   41          
-  42          /******************** IO配置函数 **************************/
-  43          void  GPIO_config(void)
-  44          {
-  45   1        GPIO_InitTypeDef  GPIO_InitStructure;   //结构定义
-  46   1      
-  47   1        GPIO_InitStructure.Pin  = GPIO_Pin_4;   //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
-  48   1        GPIO_InitStructure.Mode = GPIO_PullUp;    //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
+  42          
+  43          /******************** IO配置函数 **************************/
+  44          void  GPIO_config(void)
+  45          {
+  46   1        GPIO_InitTypeDef  GPIO_InitStructure;   //结构定义
+  47   1      
+  48   1        GPIO_InitStructure.Pin  = GPIO_Pin_4;   //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
+  49   1        GPIO_InitStructure.Mode = GPIO_PullUp;    //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
              -OUT_PP
-  49   1        GPIO_Inilize(GPIO_P5,&GPIO_InitStructure);  //初始化
-  50   1        
-  51   1        GPIO_InitStructure.Pin  = GPIO_Pin_2;   //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
-  52   1        GPIO_InitStructure.Mode = GPIO_PullUp;    //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
-             -OUT_PP
-C51 COMPILER V9.60.0.0   MAIN                                                              08/23/2022 14:30:34 PAGE 2   
+  50   1        GPIO_Inilize(GPIO_P5,&GPIO_InitStructure);  //初始化
+  51   1        
+  52   1        GPIO_InitStructure.Pin  = GPIO_Pin_2;   //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
+  53   1        GPIO_InitStructure.Mode = GPIO_PullUp;    //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
+C51 COMPILER V9.60.0.0   MAIN                                                              08/26/2022 14:50:05 PAGE 2   
 
-  53   1        GPIO_Inilize(GPIO_P3,&GPIO_InitStructure);  //初始化
-  54   1        
-  55   1        GPIO_InitStructure.Pin  = GPIO_Pin_5;   //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
-  56   1        GPIO_InitStructure.Mode = GPIO_PullUp;    //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
              -OUT_PP
-  57   1        GPIO_Inilize(GPIO_P5,&GPIO_InitStructure);  //初始化
-  58   1      }
-  59          
+  54   1        GPIO_Inilize(GPIO_P3,&GPIO_InitStructure);  //初始化
+  55   1        
+  56   1        GPIO_InitStructure.Pin  = GPIO_Pin_5;   //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
+  57   1        GPIO_InitStructure.Mode = GPIO_PullUp;    //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
+             -OUT_PP
+  58   1        GPIO_Inilize(GPIO_P5,&GPIO_InitStructure);  //初始化
+  59   1      }
   60          
-  61          /****************  SPI初始化函数 *****************/
-  62          void  SPI_config(void)
-  63          {
-  64   1        SPI_InitTypeDef   SPI_InitStructure;
-  65   1        SPI_InitStructure.SPI_Module    = ENABLE;           //SPI启动    ENABLE, DISABLE
-  66   1        SPI_InitStructure.SPI_SSIG      = DISABLE;          //片选位     ENABLE, DISABLE
-  67   1        SPI_InitStructure.SPI_FirstBit  = SPI_MSB;          //移位方向   SPI_MSB, SPI_LSB
-  68   1        SPI_InitStructure.SPI_Mode      = SPI_Mode_Master;    //主从选择   SPI_Mode_Master, SPI_Mode_Slave
-  69   1        SPI_InitStructure.SPI_CPOL      = SPI_CPOL_Low;    //时钟相位   SPI_CPOL_High,   SPI_CPOL_Low
-  70   1        SPI_InitStructure.SPI_CPHA      = SPI_CPHA_2Edge;   //数据边沿   SPI_CPHA_1Edge,  SPI_CPHA_2Edge
-  71   1        SPI_InitStructure.SPI_Interrupt = DISABLE;        //中断允许   ENABLE,DISABLE
-  72   1        SPI_InitStructure.SPI_Speed     = SPI_Speed_4;      //SPI速度    SPI_Speed_4, SPI_Speed_16, SPI_Speed_64, S
+  61          
+  62          /****************  SPI初始化函数 *****************/
+  63          void  SPI_config(void)
+  64          {
+  65   1        SPI_InitTypeDef   SPI_InitStructure;
+  66   1        SPI_InitStructure.SPI_Module    = ENABLE;           //SPI启动    ENABLE, DISABLE
+  67   1        SPI_InitStructure.SPI_SSIG      = DISABLE;          //片选位     ENABLE, DISABLE
+  68   1        SPI_InitStructure.SPI_FirstBit  = SPI_MSB;          //移位方向   SPI_MSB, SPI_LSB
+  69   1        SPI_InitStructure.SPI_Mode      = SPI_Mode_Master;    //主从选择   SPI_Mode_Master, SPI_Mode_Slave
+  70   1        SPI_InitStructure.SPI_CPOL      = SPI_CPOL_Low;    //时钟相位   SPI_CPOL_High,   SPI_CPOL_Low
+  71   1        SPI_InitStructure.SPI_CPHA      = SPI_CPHA_2Edge;   //数据边沿   SPI_CPHA_1Edge,  SPI_CPHA_2Edge
+  72   1        SPI_InitStructure.SPI_Interrupt = DISABLE;        //中断允许   ENABLE,DISABLE
+  73   1        SPI_InitStructure.SPI_Speed     = SPI_Speed_4;      //SPI速度    SPI_Speed_4, SPI_Speed_16, SPI_Speed_64, S
              -PI_Speed_128
-  73   1        SPI_InitStructure.SPI_IoUse     = 0; //IO口切换   STC8G1K08A
-  74   1        SPI_Init(&SPI_InitStructure);
-  75   1        
-  76   1        //SPI_SS_2 = 1;
-  77   1      }
-  78          
-  79          #define ESPI        0x02
-  80          
-  81          
-  82          void SPI_Isr() interrupt 9
-  83          {
-  84   1          SPSTAT = 0xc0;                              //清中断标志
-  85   1          //P10 = !P10;                                 //测试端口
-  86   1      }
-  87          
-  88          
-  89          /******************** 主函数 **************************/
-  90          void main(void)
-  91          {
-  92   1        GPIO_config();
-  93   1        SPI_config();
-  94   1        
-  95   1      
-  96   1        
-  97   1      
-  98   1        ledIndex = 0;
-  99   1        while(1)
- 100   1        {
- 101   2          //SPI_WriteByte(0x5a);
- 102   2          SPDAT = 0x5a;
- 103   2          //delay_ms(1);
- 104   2          P5_status = P5;
- 105   2          ledIndex++;
- 106   2          if(ledIndex > 7)
- 107   2          {
- 108   3            ledIndex = 0;
- 109   3          }
- 110   2          //delay_ms(25);
- 111   2          //delay_ms(25);
- 112   2        }
-C51 COMPILER V9.60.0.0   MAIN                                                              08/23/2022 14:30:34 PAGE 3   
+  74   1        SPI_InitStructure.SPI_IoUse     = 0; //IO口切换   STC8G1K08A
+  75   1        SPI_Init(&SPI_InitStructure);
+  76   1        
+  77   1        //SPI_SS_2 = 1;
+  78   1      }
+  79          
+  80          /************************ 定时器配置 ****************************/
+  81          void  Timer_config(void)
+  82          {
+  83   1        TIM_InitTypeDef   TIM_InitStructure;            //结构定义
+  84   1        TIM_InitStructure.TIM_Mode      = TIM_16BitAutoReload;  //指定工作模式,   TIM_16BitAutoReload,TIM_16Bit,TI
+             -M_8BitAutoReload,TIM_16BitAutoReloadNoMask
+  85   1        TIM_InitStructure.TIM_Priority    = Priority_0;     //指定中断优先级(低到高) Priority_0,Priority_1,Priority
+             -_2,Priority_3
+  86   1        TIM_InitStructure.TIM_Interrupt = ENABLE;         //中断是否允许,   ENABLE或DISABLE
+  87   1        TIM_InitStructure.TIM_ClkSource = TIM_CLOCK_1T;   //指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_E
+             -xt
+  88   1        TIM_InitStructure.TIM_ClkOut    = DISABLE;        //是否输出高速脉冲, ENABLE或DISABLE
+  89   1        TIM_InitStructure.TIM_Value     = 65536UL - (MAIN_Fosc / 100000UL);   //初值,
+  90   1        TIM_InitStructure.TIM_Run       = ENABLE;         //是否初始化后启动定时器, ENABLE或DISABLE
+  91   1        Timer_Inilize(Timer0,&TIM_InitStructure);         //初始化Timer0    Timer0,Timer1,Timer2,Timer3,Timer4
+  92   1      }
+  93          
+  94          
+  95          /******************** 主函数 **************************/
+  96          void main(void)
+  97          {
+  98   1        GPIO_config();
+  99   1        //SPI_config();
+ 100   1        Timer_config();
+ 101   1        EA = 1;
+ 102   1      
+ 103   1        
+ 104   1      
+ 105   1        ledIndex = 0;
+ 106   1        while(1)
+ 107   1        {
+ 108   2          //SPI_WriteByte(0x5a);
+ 109   2          //SPDAT = 0x5a;
+C51 COMPILER V9.60.0.0   MAIN                                                              08/26/2022 14:50:05 PAGE 3   
 
- 113   1      }
- 114          
- 115          
+ 110   2          //delay_ms(1);
+ 111   2          P5_status = P5;
+ 112   2          ledIndex++;
+ 113   2          if(ledIndex > 7)
+ 114   2          {
+ 115   3            ledIndex = 0;
+ 116   3          }
+ 117   2          //delay_ms(25);
+ 118   2          //delay_ms(25);
+ 119   2        }
+ 120   1      }
+ 121          
+ 122          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    114    ----
+   CODE SIZE        =    139    ----
    CONSTANT SIZE    =      8    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      3      11
+   DATA SIZE        =      3      19
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
+   EDATA SIZE       =   ----    ----
+   HDATA SIZE       =   ----    ----
+   XDATA CONST SIZE =   ----    ----
+   FAR CONST SIZE   =   ----    ----
 END OF MODULE INFORMATION.
 
 

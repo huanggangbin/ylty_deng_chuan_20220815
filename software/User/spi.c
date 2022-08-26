@@ -106,4 +106,3 @@ void SPI_Transivion (void) interrupt SPI_VECTOR
 	}
 	SPSTAT = SPIF + WCOL;	//清0 SPIF和WCOL标志
 }
-

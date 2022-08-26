@@ -2,6 +2,8 @@
 ".\Objects\delay.obj",
 ".\Objects\GPIO.obj",
 ".\Objects\main.obj",
-".\Objects\spi.obj" 
+".\Objects\spi.obj",
+".\Objects\timer.obj" 
 TO ".\Objects\deng_chuan_20220812" 
-PRINT(".\Listings\deng_chuan_20220812.m51") RAMSIZE(256) 
+
+PRINT(".\Listings\deng_chuan_20220812.map") REMOVEUNUSED 
