@@ -411,6 +411,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\timer.c</FilePath>
             </File>
+            <File>
+              <FileName>UART.C</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\UART.C</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

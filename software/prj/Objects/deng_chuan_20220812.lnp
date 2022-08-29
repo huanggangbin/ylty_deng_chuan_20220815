@@ -3,7 +3,8 @@
 ".\Objects\GPIO.obj",
 ".\Objects\main.obj",
 ".\Objects\spi.obj",
-".\Objects\timer.obj" 
+".\Objects\timer.obj",
+".\Objects\UART.obj" 
 TO ".\Objects\deng_chuan_20220812" 
 
 PRINT(".\Listings\deng_chuan_20220812.map") REMOVEUNUSED 
