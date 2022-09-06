@@ -1,10 +1,10 @@
-C51 COMPILER V9.60.0.0   MAIN                                                              08/29/2022 16:50:10 PAGE 1   
+C51 COMPILER V9.60.0.0   MAIN                                                              09/06/2022 16:49:43 PAGE 1   
 
 
 C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN .\Objects\main.obj
-COMPILER INVOKED BY: D:\Program Files\Keil_v5\C51\BIN\C51.EXE ..\User\main.c OMF2 OPTIMIZE(8,SPEED) BROWSE INCDIR(..\Use
-                    -r) DEBUG PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+COMPILER INVOKED BY: D:\Program Files\Keil_v5\C51\BIN\C51.EXE ..\User\main.c LARGE OMF2 OPTIMIZE(8,SPEED) BROWSE INCDIR(
+                    -..\User;..\mcu_sdk) DEBUG PRINT(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
 
 line level    source
 
@@ -26,163 +26,151 @@ line level    source
   16          #include  "spi.h"
   17          #include  "timer.h"
   18          #include  "UART.h"
-  19          /***************  功能说明  ****************
-  20          
-  21          本例程基于STC8H8K64U为主控芯片的实验箱8进行编写测试，STC8G、STC8H系列芯片可通用参考.
-  22          
-  23          程序使用P6口来演示跑马灯，输出低驱动。
-  24          
-  25          下载时, 选择时钟 24MHz (可以在配置文件"config.h"中修改).
-  26          
-  27          ******************************************/
-  28          
-  29          /*************  本地常量声明  **************/
-  30          u8 code ledNum[]={0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};
-  31          u8 P3_status = 0;
-  32          u8 P5_status = 0;
-  33          
-  34          /*************  本地变量声明  **************/
-  35          u8 ledIndex;
-  36          
+  19          #include  "wifi.h"
+  20          /***************  功能说明  ****************
+  21          
+  22          本例程基于STC8H8K64U为主控芯片的实验箱8进行编写测试，STC8G、STC8H系列芯片可通用参考.
+  23          
+  24          程序使用P6口来演示跑马灯，输出低驱动。
+  25          
+  26          下载时, 选择时钟 24MHz (可以在配置文件"config.h"中修改).
+  27          
+  28          ******************************************/
+  29          
+  30          /*************  本地常量声明  **************/
+  31          u8 code ledNum[]={0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80};
+  32          u8 P3_status = 0;
+  33          u8 P5_status = 0;
+  34          
+  35          /*************  本地变量声明  **************/
+  36          u8 ledIndex;
   37          
-  38          /*************  本地函数声明  **************/
-  39          
+  38          
+  39          /*************  本地函数声明  **************/
   40          
-  41          /*************  外部函数和变量声明 *****************/
-  42          
+  41          
+  42          /*************  外部函数和变量声明 *****************/
   43          
-  44          /******************** IO配置函数 **************************/
-  45          void  GPIO_config(void)
-  46          {
-  47   1        GPIO_InitTypeDef  GPIO_InitStructure;   //结构定义
-  48   1      
-  49   1        GPIO_InitStructure.Pin  = GPIO_Pin_4;   //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
-  50   1        GPIO_InitStructure.Mode = GPIO_PullUp;    //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
+  44          
+  45          /******************** IO配置函数 **************************/
+  46          void  GPIO_config(void)
+  47          {
+  48   1        GPIO_InitTypeDef  GPIO_InitStructure;   //结构定义
+  49   1      
+  50   1        GPIO_InitStructure.Pin  = GPIO_Pin_4;   //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
+  51   1        GPIO_InitStructure.Mode = GPIO_PullUp;    //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
              -OUT_PP
-  51   1        GPIO_Inilize(GPIO_P5,&GPIO_InitStructure);  //初始化
-  52   1        
-  53   1        GPIO_InitStructure.Pin  = GPIO_Pin_2;   //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
-C51 COMPILER V9.60.0.0   MAIN                                                              08/29/2022 16:50:10 PAGE 2   
+  52   1        GPIO_Inilize(GPIO_P5,&GPIO_InitStructure);  //初始化
+  53   1        
+C51 COMPILER V9.60.0.0   MAIN                                                              09/06/2022 16:49:43 PAGE 2   
 
-  54   1        GPIO_InitStructure.Mode = GPIO_PullUp;    //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
+  54   1        GPIO_InitStructure.Pin  = GPIO_Pin_2;   //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
+  55   1        GPIO_InitStructure.Mode = GPIO_PullUp;    //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
              -OUT_PP
-  55   1        GPIO_Inilize(GPIO_P3,&GPIO_InitStructure);  //初始化
-  56   1        
-  57   1        GPIO_InitStructure.Pin  = GPIO_Pin_5;   //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
-  58   1        GPIO_InitStructure.Mode = GPIO_PullUp;    //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
+  56   1        GPIO_Inilize(GPIO_P3,&GPIO_InitStructure);  //初始化
+  57   1        
+  58   1        GPIO_InitStructure.Pin  = GPIO_Pin_5;   //指定要初始化的IO, GPIO_Pin_0 ~ GPIO_Pin_7
+  59   1        GPIO_InitStructure.Mode = GPIO_PullUp;    //指定IO的输入或输出方式,GPIO_PullUp,GPIO_HighZ,GPIO_OUT_OD,GPIO_
              -OUT_PP
-  59   1        GPIO_Inilize(GPIO_P5,&GPIO_InitStructure);  //初始化
-  60   1        
+  60   1        GPIO_Inilize(GPIO_P5,&GPIO_InitStructure);  //初始化
   61   1        
-  62   1        //LED, KEY, SPI, UART
-  63   1      }
-  64          
+  62   1        
+  63   1        //LED, KEY, SPI, UART
+  64   1      }
   65          
-  66          /****************  SPI初始化函数 *****************/
-  67          void  SPI_config(void)
-  68          {
-  69   1        SPI_InitTypeDef   SPI_InitStructure;
-  70   1        SPI_InitStructure.SPI_Module    = ENABLE;           //SPI启动    ENABLE, DISABLE
-  71   1        SPI_InitStructure.SPI_SSIG      = DISABLE;          //片选位     ENABLE, DISABLE
-  72   1        SPI_InitStructure.SPI_FirstBit  = SPI_MSB;          //移位方向   SPI_MSB, SPI_LSB
-  73   1        SPI_InitStructure.SPI_Mode      = SPI_Mode_Master;    //主从选择   SPI_Mode_Master, SPI_Mode_Slave
-  74   1        SPI_InitStructure.SPI_CPOL      = SPI_CPOL_Low;    //时钟相位   SPI_CPOL_High,   SPI_CPOL_Low
-  75   1        SPI_InitStructure.SPI_CPHA      = SPI_CPHA_2Edge;   //数据边沿   SPI_CPHA_1Edge,  SPI_CPHA_2Edge
-  76   1        SPI_InitStructure.SPI_Interrupt = DISABLE;        //中断允许   ENABLE,DISABLE
-  77   1        SPI_InitStructure.SPI_Speed     = SPI_Speed_4;      //SPI速度    SPI_Speed_4, SPI_Speed_16, SPI_Speed_64, S
+  66          
+  67          /****************  SPI初始化函数 *****************/
+  68          void  SPI_config(void)
+  69          {
+  70   1        SPI_InitTypeDef   SPI_InitStructure;
+  71   1        SPI_InitStructure.SPI_Module    = ENABLE;           //SPI启动    ENABLE, DISABLE
+  72   1        SPI_InitStructure.SPI_SSIG      = DISABLE;          //片选位     ENABLE, DISABLE
+  73   1        SPI_InitStructure.SPI_FirstBit  = SPI_MSB;          //移位方向   SPI_MSB, SPI_LSB
+  74   1        SPI_InitStructure.SPI_Mode      = SPI_Mode_Master;    //主从选择   SPI_Mode_Master, SPI_Mode_Slave
+  75   1        SPI_InitStructure.SPI_CPOL      = SPI_CPOL_Low;    //时钟相位   SPI_CPOL_High,   SPI_CPOL_Low
+  76   1        SPI_InitStructure.SPI_CPHA      = SPI_CPHA_2Edge;   //数据边沿   SPI_CPHA_1Edge,  SPI_CPHA_2Edge
+  77   1        SPI_InitStructure.SPI_Interrupt = DISABLE;        //中断允许   ENABLE,DISABLE
+  78   1        SPI_InitStructure.SPI_Speed     = SPI_Speed_4;      //SPI速度    SPI_Speed_4, SPI_Speed_16, SPI_Speed_64, S
              -PI_Speed_128
-  78   1        SPI_InitStructure.SPI_IoUse     = 0; //IO口切换   STC8G1K08A
-  79   1        SPI_Init(&SPI_InitStructure);
-  80   1        
-  81   1        //SPI_SS_2 = 1;
-  82   1      }
-  83          
+  79   1        SPI_InitStructure.SPI_IoUse     = 0; //IO口切换   STC8G1K08A
+  80   1        SPI_Init(&SPI_InitStructure);
+  81   1        
+  82   1        //SPI_SS_2 = 1;
+  83   1      }
   84          
-  85          /************************ 定时器配置 ****************************/
-  86          void  Timer_config(void)
-  87          {
-  88   1        TIM_InitTypeDef   TIM_InitStructure;            //结构定义
-  89   1        TIM_InitStructure.TIM_Mode      = TIM_16BitAutoReload;  //指定工作模式,   TIM_16BitAutoReload,TIM_16Bit,TI
+  85          
+  86          /************************ 定时器配置 ****************************/
+  87          void  Timer_config(void)
+  88          {
+  89   1        TIM_InitTypeDef   TIM_InitStructure;            //结构定义
+  90   1        TIM_InitStructure.TIM_Mode      = TIM_16BitAutoReload;  //指定工作模式,   TIM_16BitAutoReload,TIM_16Bit,TI
              -M_8BitAutoReload,TIM_16BitAutoReloadNoMask
-  90   1        TIM_InitStructure.TIM_Priority    = Priority_0;     //指定中断优先级(低到高) Priority_0,Priority_1,Priority
+  91   1        TIM_InitStructure.TIM_Priority    = Priority_0;     //指定中断优先级(低到高) Priority_0,Priority_1,Priority
              -_2,Priority_3
-  91   1        TIM_InitStructure.TIM_Interrupt = ENABLE;         //中断是否允许,   ENABLE或DISABLE
-  92   1        TIM_InitStructure.TIM_ClkSource = TIM_CLOCK_1T;   //指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_E
+  92   1        TIM_InitStructure.TIM_Interrupt = ENABLE;         //中断是否允许,   ENABLE或DISABLE
+  93   1        TIM_InitStructure.TIM_ClkSource = TIM_CLOCK_1T;   //指定时钟源,     TIM_CLOCK_1T,TIM_CLOCK_12T,TIM_CLOCK_E
              -xt
-  93   1        TIM_InitStructure.TIM_ClkOut    = DISABLE;        //是否输出高速脉冲, ENABLE或DISABLE
-  94   1        TIM_InitStructure.TIM_Value     = 65536UL - (MAIN_Fosc / 100000UL);   //初值,
-  95   1        TIM_InitStructure.TIM_Run       = ENABLE;         //是否初始化后启动定时器, ENABLE或DISABLE
-  96   1        Timer_Inilize(Timer0,&TIM_InitStructure);         //初始化Timer0    Timer0,Timer1,Timer2,Timer3,Timer4
-  97   1      }
-  98          
+  94   1        TIM_InitStructure.TIM_ClkOut    = DISABLE;        //是否输出高速脉冲, ENABLE或DISABLE
+  95   1        TIM_InitStructure.TIM_Value     = 65536UL - (MAIN_Fosc / 100000UL);   //初值,
+  96   1        TIM_InitStructure.TIM_Run       = ENABLE;         //是否初始化后启动定时器, ENABLE或DISABLE
+  97   1        Timer_Inilize(Timer0,&TIM_InitStructure);         //初始化Timer0    Timer0,Timer1,Timer2,Timer3,Timer4
+  98   1      }
   99          
- 100          /***************  串口初始化函数 *****************/
- 101          void  UART_config(void)
- 102          {
- 103   1        COMx_InitDefine   COMx_InitStructure;         //结构定义
- 104   1        COMx_InitStructure.UART_Mode      = UART_8bit_BRTx; //模式, UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UART
+ 100          
+ 101          /***************  串口初始化函数 *****************/
+ 102          void  UART_config(void)
+ 103          {
+ 104   1        COMx_InitDefine   COMx_InitStructure;         //结构定义
+ 105   1        COMx_InitStructure.UART_Mode      = UART_8bit_BRTx; //模式, UART_ShiftRight,UART_8bit_BRTx,UART_9bit,UART
              -_9bit_BRTx
- 105   1        COMx_InitStructure.UART_BRT_Use   = BRT_Timer1;     //选择波特率发生器, BRT_Timer1, BRT_Timer2 (注意: 串口2
+ 106   1        COMx_InitStructure.UART_BRT_Use   = BRT_Timer1;     //选择波特率发生器, BRT_Timer1, BRT_Timer2 (注意: 串口2
              -固定使用BRT_Timer2)
- 106   1        COMx_InitStructure.UART_BaudRate  = 115200ul;     //波特率, 一般 110 ~ 115200
- 107   1        COMx_InitStructure.UART_RxEnable  = ENABLE;       //接收允许,   ENABLE或DISABLE
-C51 COMPILER V9.60.0.0   MAIN                                                              08/29/2022 16:50:10 PAGE 3   
+ 107   1        COMx_InitStructure.UART_BaudRate  = 115200ul;     //波特率, 一般 110 ~ 115200
+C51 COMPILER V9.60.0.0   MAIN                                                              09/06/2022 16:49:43 PAGE 3   
 
- 108   1        COMx_InitStructure.BaudRateDouble = DISABLE;      //波特率加倍, ENABLE或DISABLE
- 109   1        COMx_InitStructure.UART_Interrupt = ENABLE;       //中断允许,   ENABLE或DISABLE
- 110   1        COMx_InitStructure.UART_Priority    = Priority_0;     //指定中断优先级(低到高) Priority_0,Priority_1,Priori
+ 108   1        COMx_InitStructure.UART_RxEnable  = ENABLE;       //接收允许,   ENABLE或DISABLE
+ 109   1        COMx_InitStructure.BaudRateDouble = DISABLE;      //波特率加倍, ENABLE或DISABLE
+ 110   1        COMx_InitStructure.UART_Interrupt = ENABLE;       //中断允许,   ENABLE或DISABLE
+ 111   1        COMx_InitStructure.UART_Priority    = Priority_0;     //指定中断优先级(低到高) Priority_0,Priority_1,Priori
              -ty_2,Priority_3
- 111   1        COMx_InitStructure.UART_P_SW      = UART1_SW_P54_P55; //切换端口,   UART1_SW_P30_P31,UART1_SW_P36_P37,UAR
+ 112   1        COMx_InitStructure.UART_P_SW      = UART1_SW_P54_P55; //切换端口,   UART1_SW_P30_P31,UART1_SW_P36_P37,UAR
              -T1_SW_P16_P17,UART1_SW_P43_P44
- 112   1        UART_Configuration(UART1, &COMx_InitStructure);   //初始化串口1 UART1,UART2,UART3,UART4
- 113   1      
- 114   1        PrintString1("STC8G1K08A UART1 Test Programme!\r\n"); //UART1发送一个字符串
- 115   1      }
+ 113   1        UART_Configuration(UART1, &COMx_InitStructure);   //初始化串口1 UART1,UART2,UART3,UART4
+ 114   1      }
+ 115          
  116          
- 117          
- 118          /******************** 主函数 **************************/
- 119          void main(void)
- 120          {
- 121   1        u8  i;
- 122   1        
- 123   1        GPIO_config();
- 124   1        //SPI_config();
- 125   1        //Timer_config
- 126   1        UART_config();
- 127   1        EA = 1;
- 128   1      
- 129   1        while(1)
- 130   1        {
- 131   2          //SPI_WriteByte(0x5a);
- 132   2          //SPDAT = 0x5a;
- 133   2          //delay_ms(1);
- 134   2          //P5_status = P5;
- 135   2          delay_ms(1);
- 136   2          if(COM1.RX_TimeOut > 0)   //超时计数
- 137   2          {
- 138   3            if(--COM1.RX_TimeOut == 0)
- 139   3            {
- 140   4              if(COM1.RX_Cnt > 0)
- 141   4              {
- 142   5                for(i=0; i<COM1.RX_Cnt; i++)  TX1_write2buff(RX1_Buffer[i]);  //收到的数据原样返回
- 143   5              }
- 144   4              COM1.RX_Cnt = 0;
- 145   4            }
- 146   3          }
- 147   2          //delay_ms(25);
- 148   2          //delay_ms(25);
- 149   2        }
- 150   1      }
- 151          
- 152          
+ 117          /******************** 主函数 **************************/
+ 118          void main(void)
+ 119          {
+ 120   1        GPIO_config();
+ 121   1        //SPI_config();
+ 122   1        //Timer_config
+ 123   1        UART_config();
+ 124   1        EA = 1;
+ 125   1        
+ 126   1        wifi_protocol_init();
+ 127   1        while(1)
+ 128   1        {
+ 129   2            wifi_uart_service();
+ 130   2          //SPI_WriteByte(0x5a);
+ 131   2          //SPDAT = 0x5a;
+ 132   2          //delay_ms(1);
+ 133   2          //P5_status = P5;
+ 134   2      
+ 135   2          //delay_ms(25);
+ 136   2          //delay_ms(25);
+ 137   2        }
+ 138   1      }
+ 139          
+ 140          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    234    ----
-   CONSTANT SIZE    =     43    ----
-   XDATA SIZE       =   ----    ----
+   CODE SIZE        =    201    ----
+   CONSTANT SIZE    =      8    ----
+   XDATA SIZE       =      3      31
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      3      32
+   DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
    EDATA SIZE       =   ----    ----
@@ -190,8 +178,6 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    XDATA CONST SIZE =   ----    ----
    FAR CONST SIZE   =   ----    ----
 END OF MODULE INFORMATION.
-
-C51 COMPILER V9.60.0.0   MAIN                                                              08/29/2022 16:50:10 PAGE 4   
 
 
 C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

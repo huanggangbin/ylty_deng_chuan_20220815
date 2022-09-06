@@ -16,6 +16,7 @@
 #include	"spi.h"
 #include	"timer.h"
 #include	"UART.h"
+#include  "wifi.h"
 /***************	功能说明	****************
 
 本例程基于STC8H8K64U为主控芯片的实验箱8进行编写测试，STC8G、STC8H系列芯片可通用参考.
@@ -110,40 +111,27 @@ void	UART_config(void)
 	COMx_InitStructure.UART_Priority    = Priority_0;			//指定中断优先级(低到高) Priority_0,Priority_1,Priority_2,Priority_3
 	COMx_InitStructure.UART_P_SW      = UART1_SW_P54_P55;	//切换端口,   UART1_SW_P30_P31,UART1_SW_P36_P37,UART1_SW_P16_P17,UART1_SW_P43_P44
 	UART_Configuration(UART1, &COMx_InitStructure);		//初始化串口1 UART1,UART2,UART3,UART4
-
-	PrintString1("STC8G1K08A UART1 Test Programme!\r\n");	//UART1发送一个字符串
 }
 
 
 /******************** 主函数 **************************/
 void main(void)
 {
-	u8	i;
-	
 	GPIO_config();
 	//SPI_config();
 	//Timer_config
 	UART_config();
 	EA = 1;
-
+	
+	wifi_protocol_init();
 	while(1)
 	{
+			wifi_uart_service();
 		//SPI_WriteByte(0x5a);
 		//SPDAT = 0x5a;
 		//delay_ms(1);
 		//P5_status = P5;
-		delay_ms(1);
-		if(COM1.RX_TimeOut > 0)		//超时计数
-		{
-			if(--COM1.RX_TimeOut == 0)
-			{
-				if(COM1.RX_Cnt > 0)
-				{
-					for(i=0; i<COM1.RX_Cnt; i++)	TX1_write2buff(RX1_Buffer[i]);	//收到的数据原样返回
-				}
-				COM1.RX_Cnt = 0;
-			}
-		}
+
 		//delay_ms(25);
 		//delay_ms(25);
 	}
